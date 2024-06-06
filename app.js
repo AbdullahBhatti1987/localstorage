@@ -97,7 +97,8 @@ function signinreset() {
 }
 function saveSignin() {
   var checkEmail = false; 
-  var getSignupId = localStorage.getItem(signinEmail)
+  var getSignupId = localStorage.getItem('SignupValue')
+  console.log(signupStorage)
   signupStorage = JSON.parse(getSignupId)
   for (var i = 0; i < signupStorage.length; i++) {
     if (signinEmail.value === signupStorage[i].signupEmail && signinPassword.value === signupStorage[i].signupPassword) {
