@@ -12,6 +12,12 @@ body {
     height: 100vh;
     margin: 0;
 }
+header{
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    z-index: 999;
+}
 .form-container {
     background-color: #ffffff;
     border-radius: 8px;
@@ -299,4 +305,9 @@ input[type='radio'] {
 
 .delete-btn:hover {
     background-color: var(--delete-button-hover);
+}
+.userName{
+    /* display: none; */
+    margin-right: 20px;
+    width: 40%;
 }

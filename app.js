@@ -1,6 +1,14 @@
-// ===============signup form start======================
 var formContainer = document.getElementById("formContainer");
 var welcome = document.getElementById("welcome");
+function screenRefresh(){
+  if(localStorage.getItem('SigninValue')){
+    welcome.style.display = 'flex';
+    formContainer.style.display = 'none';
+  }
+}
+screenRefresh()
+// ===============signup form start======================
+
 var signupForm = document.getElementById("signupForm");
 var signinForm = document.getElementById("signinForm");
 var signupEmail = document.getElementById("signupEmail");
@@ -64,7 +72,7 @@ function saveSignup() {
       signinEmail.value = temp;
       signinPassword.value = "";
     } else {
-      console.log("User already available");
+      console.log("Provided email already available");
     }
   } else {
     alert("Enter Correct Password");
@@ -89,15 +97,8 @@ var signinEmail = document.getElementById("signinEmail");
 var signinPassword = document.getElementById("signinPassword");
 var signinStorage = [];
 var activeUser = "";
-function userScreen(){
-  var temp = localStorage.getItem('SigninValue')
-  if(localStorage.getItem('SigninValue') === temp){ 
-    welcome.style.display = 'flex';
-    formContainer.style.display = 'none';
-  }
-  
-}
-userScreen()
+
+
 function newSignIn() {
 
   var obj = {
@@ -130,14 +131,14 @@ function saveSignin() {
       console.log("ID Available");
       checkSignupEmail = true;
       newSignIn();
-      alert("Welcome to Todo App");
+      console.log("Welcome to Todo App");
       welcome.style.display = "flex";
       formContainer.style.display = "none";
-      console.log('User Active in console')
       activeUser = signinEmail.value;
-      console.log('User Active in localStorage')
       localStorage.setItem('SigninValue', activeUser)
-      console.log(activeUser);
+      console.log("User login");
+      eventfun();
+      userkiHeading()
       break;
     }
   }
@@ -145,27 +146,29 @@ function saveSignin() {
     console.log("Incorrect Email or Password");
     alert("Incorrect Email or Password");
   }
-  console.log("User login");
+  
 }
 // ===============signin form end========================
 // ===============signout form start======================
 function logout() {
   activeUser = '';
+  localStorage.removeItem('SigninValue')
   formContainer.style.display = 'block';
   welcome.style.display = 'none';
   signinreset();
-}
+  userkiHeading()
+  }
 // ===============signout form end======================
 function memoryClear() {
+  welcome.style.display = 'none';
   localStorage.clear();
+  userkiHeading()
 }
 
 // ====================Signin form end===================
 // =======================Todo start===================
-
-
-
-var input = document.getElementById("new-task");
+var listContainer = document.getElementById('listContainer');
+var input = document.getElementById('new-task');
 var add_btn = document.getElementById("add-task-btn");
 var task_list = document.getElementById("task-list");
 var todoStorage = [];
@@ -174,12 +177,13 @@ function newTodo() {
   var now = new Date();
   if (input.value) {
     var obj = {
-      emailID: activeUser,
+      emailID: localStorage.getItem('SigninValue'),
       toDo: input.value,
       date: now.toLocaleDateString(),
     }
     var new_task = `<li class="task-item">
-    <span class="task-text"> ${obj.toDo}</span>
+    <span class="userName" style="display: none";>${obj.emailID}</span>
+    <span class="task-text">${obj.toDo}</span>
     <span class="number" id="number"></span>
     <div class="task-buttons">
     <span class="task-date">${obj.date}</span>
@@ -190,11 +194,15 @@ function newTodo() {
     input.value = "";
     todoStorage.push(obj);
   }
+  console.log('Stage-01')
  }
 add_btn.addEventListener("click", function () {
   newTodo();
-  var jsonStringify = JSON.stringify(todoStorage);
-  localStorage.setItem("ToDos", jsonStringify);
+  console.log('Stage-02')
+  localStorage.setItem('ToDos', JSON.stringify(todoStorage))
+
+  userkiHeading()
+  eventfun()
 });
 function edit_btn(element) {
   var temp = prompt("Enter updated value", "Enter new value");
@@ -203,4 +211,33 @@ function edit_btn(element) {
 }
 function delete_btn(element) {
   element.parentElement.parentElement.remove();
+}
+
+
+function eventfun(){
+  var myTodos = [];
+  console.log('1')
+  var loginUser = localStorage.getItem('SigninValue');
+  console.log(loginUser)
+  todoStorage.forEach(function (data, ind){
+    if(loginUser === data.emailID){
+      myTodos.push(data);
+    }
+
+  });
+  
+  // for(var i = 0; i < todoStorage.length; i++){
+  //   console.log('5')
+  //   if(loginUser === todoStorage[i].emailID){
+  //     myTodos.push(todoStorage[i])
+  //     }   
+  //   console.log('7')
+  //   }
+  console.log('8')
+  console.log('last line')
+}
+
+function userkiHeading(){
+  var username1 = document.getElementById('userHeading')
+  username1.innerText = localStorage.getItem('SigninValue')
 }
