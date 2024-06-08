@@ -153,6 +153,8 @@ input[type="checkbox"] {
     background-repeat: no-repeat;
     background-size: cover;
     display: none;
+    position: fixed;
+    overflow-y: scroll;
     justify-content: center;
     align-items: center;
     width: 100%;
